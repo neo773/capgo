@@ -1,6 +1,6 @@
 {
   "name": "capgo-app",
-  "version": "10.80.0",
+  "version": "10.108.0",
   "private": true,
   "scripts": {
     "build": "vite build",
@@ -70,7 +70,7 @@
     "@capgo/capacitor-screen-recorder": "^5.0.0",
     "@capgo/capacitor-updater": "5.2.22",
     "@capgo/google-play-scraper": "^9.1.2",
-    "@capgo/inappbrowser": "^5.0.0",
+    "@capgo/inappbrowser": "^1.2.7",
     "@capgo/native-audio": "^6.0.18",
     "@capgo/native-market": "^5.0.3",
     "@formkit/auto-animate": "1.0.0-pre-alpha.3",
@@ -80,6 +80,7 @@
     "@netlify/functions": "^1.6.0",
     "@supabase/supabase-js": "2.33.1",
     "@tailwindcss/forms": "^0.5.5",
+    "@upstash/redis": "^1.22.0",
     "@vueuse/components": "^10.4.0",
     "@vueuse/core": "10.4.0",
     "adm-zip": "^0.5.10",
@@ -97,10 +98,12 @@
     "crypto-random-string": "^5.0.0",
     "daisyui": "^3.6.3",
     "dayjs": "1.11.9",
+    "dompurify": "^3.0.5",
     "firebase": "10.3.0",
     "flowbite": "^1.8.1",
     "generate-password-browser": "^1.1.0",
     "google-play-scraper": "^9.2.0",
+    "ioredis": "^5.3.2",
     "json2csv": "^5.0.7",
     "konsta": "^2.0.0",
     "lauqe": "^1.5.0",
@@ -118,7 +121,8 @@
     "vue-demi": "0.14.5",
     "vue-i18n": "9.2.2",
     "vue-router": "4.2.4",
-    "vue-sonner": "^0.4.3"
+    "vue-sonner": "^0.4.3",
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "0.41.0",
@@ -142,6 +146,7 @@
     "@types/node": "18.15.11",
     "@types/nprogress": "^0.2.0",
     "@types/uuid": "9.0.1",
+    "@types/dompurify": "3.0.2",
     "@vitejs/plugin-vue": "4.3.3",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
     "@vue/cli-service": "5.0.8",
