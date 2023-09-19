@@ -44,13 +44,17 @@ async function main(
       .from('app_versions')
       .select('*')
       .eq('app_id', body.app_id)
+      .not('bucket_id','is', null)
       .order('created_at', { ascending: false })
       .limit(1)
       .single()
-    console.log(data);
+      
+    console.log('LATEST BUNDLE CHECK', data);
+
     if (data === null) {
-      return sendRes({ status: "Error unknow" }, 500);
+      return sendRes({ url: null });
     }
+
     const url = await getBundleUrl(
       data.storage_provider,
       `apps/${data.user_id}/${data.app_id}/versions`,
@@ -59,7 +63,19 @@ async function main(
     if (!url) {
       return sendRes({ status: "Error unknow", error: 'Bundle not found' }, 500);
     }
-    return sendRes({ url: url });
+
+console.log({ 
+  url: url,
+  fileName: data.bucket_id,
+  sessionKey: data.session_key,
+});
+
+    return sendRes({ 
+      url: url,
+      fileName: data.bucket_id,
+      sessionKey: data.session_key,
+    }, 200);
+    
   } catch (e) {
     return sendRes({
       status: "Error unknow",

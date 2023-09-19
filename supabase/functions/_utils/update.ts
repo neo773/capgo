@@ -9,15 +9,18 @@ import { getBundleUrl } from '../_utils/downloadUrl.ts'
 import { logsnag } from '../_utils/logsnag.ts'
 import { appIdToUrl } from './../_utils/conversion.ts'
 
-function resToVersion(plugin_version: string, signedURL: string, version: Database['public']['Tables']['app_versions']['Row']) {
+function resToVersion(plugin_version: string, signedURL: string, signedURLPartial: string | null, version: Database['public']['Tables']['app_versions']['Row']) {
   const res: any = {
     version: version.name,
     url: signedURL,
+    url_partial: signedURLPartial,
   }
   if (semver.gte(plugin_version, '4.13.0'))
     res.session_key = version.session_key || ''
+  res.session_key_partial = version.session_key_partial || ''
   if (semver.gte(plugin_version, '4.4.0'))
     res.checksum = version.checksum
+  res.checksum_partial_update = version.checksum_partial_update
   return res
 }
 
@@ -49,9 +52,12 @@ async function requestInfos(app_id: string, device_id: string, version_name: str
         id,
         name,
         checksum,
+        checksum_partial_update,
         session_key,
+        session_key_partial,
         user_id,
         bucket_id,
+        bucket_id_partial,
         storage_provider,
         external_url
       )
@@ -84,9 +90,12 @@ async function requestInfos(app_id: string, device_id: string, version_name: str
           id,
           name,
           checksum,
+          checksum_partial_update,
           session_key,
+          session_key_partial,
           user_id,
           bucket_id,
+          bucket_id_partial,
           storage_provider,
           external_url
         )
@@ -116,9 +125,12 @@ async function requestInfos(app_id: string, device_id: string, version_name: str
         id,
         name,
         checksum,
+        checksum_partial_update,
         session_key,
+        session_key_partial,
         user_id,
         bucket_id,
+        bucket_id_partial,
         storage_provider,
         external_url
       ),
@@ -129,9 +141,12 @@ async function requestInfos(app_id: string, device_id: string, version_name: str
         id,
         name,
         checksum,
+        checksum_partial_update,
         session_key,
+        session_key_partial,
         user_id,
         bucket_id,
+        bucket_id_partial,
         storage_provider,
         external_url
       )
@@ -338,10 +353,18 @@ export async function update(body: AppInfos) {
       }, 200, updateOverwritten)
     }
     let signedURL = version.external_url || ''
+    let signedURLPartial = version.external_url || null
+
     if (version.bucket_id && !version.external_url) {
       const res = await getBundleUrl(version.storage_provider, `apps/${version.user_id}/${app_id}/versions`, version.bucket_id)
       if (res)
         signedURL = res
+    }
+
+    if (version.bucket_id_partial && !version.external_url) {
+      const res = await getBundleUrl(version.storage_provider, `apps/${version.user_id}/${app_id}/versions`, version.bucket_id_partial)
+      if (res)
+        signedURLPartial = res
     }
 
     // console.log('signedURL', device_id, signedURL, version_name, version.name)
@@ -433,7 +456,9 @@ export async function update(body: AppInfos) {
     // console.log(id, 'save stats', device_id)
     await sendStats('get', platform, device_id, app_id, version_build, versionId)
     console.log(id, 'New version available', app_id, version.name, signedURL)
-    return sendResWithStatus('new_version', resToVersion(plugin_version, signedURL, version), 200, updateOverwritten)
+
+    // asjdaklsdj
+    return sendResWithStatus('new_version', resToVersion(plugin_version, signedURL, signedURLPartial, version), 200, updateOverwritten)
   }
   catch (e) {
     console.error('e', e)

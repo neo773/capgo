@@ -57,14 +57,14 @@ async function main(url: URL, headers: BaseHeaders, method: string, body: dataUp
     if (!fullBundleUrl)
       return sendRes({ status: 'Error unknow' }, 500)
     console.log('url', fullBundlePath, fullBundleUrl)
-    return sendRes({ urls: {
-      full: fullBundleUrl,
-      partial: partialBundleUrl
-    } })
+    return sendRes({
+      url: fullBundleUrl,
+      url_partial: partialBundleUrl,
+    })
   }
   catch (e) {
-    console.log(e);
-    
+    console.log(e)
+
     return sendRes({
       status: 'Error unknow',
       error: JSON.stringify(e),

@@ -138,7 +138,8 @@ export interface Database {
           bandwidth: number
           created_at: string | null
           id: string
-          mlu: number
+          mau: number
+          mode: Database["public"]["Enums"]["usage_mode"]
           storage: number
         }
         Insert: {
@@ -146,7 +147,8 @@ export interface Database {
           bandwidth?: number
           created_at?: string | null
           id?: string
-          mlu?: number
+          mau?: number
+          mode?: Database["public"]["Enums"]["usage_mode"]
           storage?: number
         }
         Update: {
@@ -154,7 +156,8 @@ export interface Database {
           bandwidth?: number
           created_at?: string | null
           id?: string
-          mlu?: number
+          mau?: number
+          mode?: Database["public"]["Enums"]["usage_mode"]
           storage?: number
         }
         Relationships: []
@@ -163,6 +166,7 @@ export interface Database {
         Row: {
           app_id: string
           bucket_id: string | null
+          bucket_id_partial: string | null
           checksum: string | null
           checksum_partial_update: string | null
           created_at: string | null
@@ -178,6 +182,7 @@ export interface Database {
         Insert: {
           app_id: string
           bucket_id?: string | null
+          bucket_id_partial?: string | null
           checksum?: string | null
           checksum_partial_update?: string | null
           created_at?: string | null
@@ -193,6 +198,7 @@ export interface Database {
         Update: {
           app_id?: string
           bucket_id?: string | null
+          bucket_id_partial?: string | null
           checksum?: string | null
           checksum_partial_update?: string | null
           created_at?: string | null
@@ -1534,7 +1540,6 @@ export interface Database {
     }
     Enums: {
       key_mode: "read" | "write" | "all" | "upload"
-      pay_as_you_go_type: "base" | "units"
       platform_os: "ios" | "android"
       stripe_status:
         | "created"
@@ -1548,9 +1553,6 @@ export interface Database {
       user_role: "read" | "upload" | "write" | "admin"
     }
     CompositeTypes: {
-      match_plan: {
-        name: string
-      }
       stats_table: {
         mau: number
         bandwidth: number
